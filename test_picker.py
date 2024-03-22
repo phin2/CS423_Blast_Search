@@ -45,6 +45,7 @@ def xmlparser(xmlfile):
         for hsp in alginment.hsp:
             print(alginment.title)
 
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.withdraw()
@@ -53,38 +54,34 @@ if __name__ == "__main__":
     pathogens = pathogenic_file.read()
 
     pathogens = pathogens.split("\n")
-    # files = filedialog.askopenfilenames(parent=root,title ="Select Sequence Files")
+
+    #prompts users to select files
+    files = filedialog.askopenfilenames(parent=root,title ="Select Sequence Files")
     
-    # print(files)
-    # mf = multifasta(files)
-    # mf = mf.replace(">>",">")
+    #formats the sequence files in multifasta format
+    mf = multifasta(files)
+    mf = mf.replace(">>",">")
 
-    # print(mf)
-
-    # result_handle = NCBIWWW.qblast("blastn", "nt",mf,hitlist_size=20)
-    # blast_results = result_handle.read()
+    #performs blast search on the multifasta files
+    result_handle = NCBIWWW.qblast("blastn", "nt",mf,hitlist_size=20)
+    blast_results = result_handle.read()
     
-    # with open("myBlast.xml", "w") as saveTo:
-    #     saveTo.write(blast_results)
-    #     print(blast_results)
-    #     result_handle.close()
+    with open("myBlast.xml", "w") as saveTo:
+        saveTo.write(blast_results)
+        print(blast_results)
+        result_handle.close()
 
-    # # open xml file and print its file handle to be sure it was created
-    # with open("myBlast.xml") as result:
-    #     print(result)
+    # open xml file and print its file handle to be sure it was created
+    with open("myBlast.xml") as result:
+        print(result)
 
-    # # go through xml and print the titles that have a low E-value
-    # # with pd.ExcelWriter("Blast_Results.xlsx",engine="openpyxl") as writer:
-    # for record in NCBIXML.parse(open("myBlast.xml")):
-    #     if record.alignments:
-    #         print("\n")
-    #         print("query: %s" % record.query[:100])
-    #         matches = []
-    #         for align in record.alignments:
-    #             print("match: %s " % align.title[:100])
-    #             matches.append((align.title,"Safe"))
-    #         # df = pd.DataFrame(matches,columns=["Title","Risk"])
-    #         # df.to_excel(writer,sheet_name=record.query,index=False)
+    # go through xml and print the titles that have a low E-value
+    if record.alignments:
+        print("\n")
+        print("query: %s" % record.query[:100])
+        for align in record.alignments:
+            print("match: %s " % align.title[:100])
+
     
 
     

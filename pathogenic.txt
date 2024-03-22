@@ -1,0 +1,11 @@
+anthracis
+yersinia
+francisella
+clostridium
+salmonella
+escherichia
+campylobacter
+legionella
+mycobacterium
+shigella
+aeruginosa
