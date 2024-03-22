@@ -45,24 +45,25 @@ def xmlparser(xmlfile):
         for hsp in alginment.hsp:
             print(alginment.title)
 
-
 if __name__ == "__main__":
     root = tk.Tk()
     root.withdraw()
     
+    #list of pathogenic files
     pathogenic_file = open("pathogenic.txt","r")
     pathogens = pathogenic_file.read()
 
     pathogens = pathogens.split("\n")
 
-    #prompts users to select files
+    #prompts user for files to blast
     files = filedialog.askopenfilenames(parent=root,title ="Select Sequence Files")
     
-    #formats the sequence files in multifasta format
+    #formats sequences into multifasta format
     mf = multifasta(files)
     mf = mf.replace(">>",">")
 
-    #performs blast search on the multifasta files
+
+    #performs blast search on the multifasta
     result_handle = NCBIWWW.qblast("blastn", "nt",mf,hitlist_size=20)
     blast_results = result_handle.read()
     
@@ -76,11 +77,12 @@ if __name__ == "__main__":
         print(result)
 
     # go through xml and print the titles that have a low E-value
-    if record.alignments:
-        print("\n")
-        print("query: %s" % record.query[:100])
-        for align in record.alignments:
-            print("match: %s " % align.title[:100])
+    for record in NCBIXML.parse(open("myBlast.xml")):
+        if record.alignments:
+            print("\n")
+            print("query: %s" % record.query[:100])
+            for align in record.alignments:
+                print("match: %s " % align.title[:100])
 
     
 
